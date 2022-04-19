@@ -1,0 +1,30 @@
+version: "3"
+services:
+  web:
+    build: .
+    container_name: web
+    ports:
+      - "3333:3333"
+    networks:
+      - audit_net
+  paciolinode:
+    image: auditchainag/paciolinode
+    container_name: paciolinode
+    stdin_open: true # docker run -i
+    tty: true
+    volumes:
+      - '/YourPathToASecretDirectory:/secret/'
+      - 'myPacioliWorkVolume:/workdir'
+    command: /bin/bash
+    networks:
+      - audit_net
+    depends_on:
+      - web
+    environment:
+      PROVIDER_MANAGER: http://web:3333
+      PACIOLI_ENV: /secret/PacioliNode.env
+networks:
+  audit_net:
+    driver: bridge
+volumes:
+  myPacioliWorkVolume:
