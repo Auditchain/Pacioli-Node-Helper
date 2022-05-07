@@ -3,12 +3,17 @@ so that on Pacioli node restart it doesn't get stuck asking a human user for key
 
 To execute:
 
-    Adjust your path to the secret directory on your server (host), in the /secret/ volume in docker-compose.yml
-    Make sure your encrypted keystore file is in that directpry, as well as a PacioliNode.env file
+    Make sure images auditchainag/paciolinode and auditchainag/pacioli-node-helper are available on hub.docker.com
 
-    docker compose run paciolinode bash --build
+    Download the docker-compose.yml file in this repository to your directory
 
-    Answer the two questions by the Pacioli node agent (keystore location and its password)
+    Make sure your encrypted keystore file is in that directory, as well as a PacioliNode.env file; cd to that directory and:
+
+        docker compose run paciolinode
+
+    Answer the two questions by the Pacioli node agent (keystore location, prefixed by /secret/ ; and its password); 
+    so for keystore myKeystore, the location answer should be /secret/myKeystore . 
+    Notice that the Pacioli container wil have access to your current directory
 
 (you may need to authenticate first on Docker hub with docker login -u auditchainag, cf. node operation instructions)
 

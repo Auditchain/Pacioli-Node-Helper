@@ -1,7 +1,7 @@
 version: "3"
 services:
   web:
-    build: .
+    image: auditchainag/pacioli-node-helper
     container_name: web
     ports:
       - "3333:3333"
@@ -13,7 +13,7 @@ services:
     stdin_open: true # docker run -i
     tty: true
     volumes:
-      - '/YourPathToASecretDirectory:/secret/'
+      - '.:/secret/'
       - 'myPacioliWorkVolume:/workdir'
     command: /bin/bash
     networks:

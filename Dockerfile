@@ -1,3 +1,6 @@
+#   docker build -t auditchainag/pacioli-node-helper .
+#   docker push auditchainag/pacioli-node-helper .
+
 FROM node:16
 
 # Create app directory
