@@ -23,6 +23,8 @@ services:
     environment:
       PROVIDER_MANAGER: http://web:3333
       PACIOLI_ENV: /secret/PacioliNode.env
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
 networks:
   audit_net:
     driver: bridge

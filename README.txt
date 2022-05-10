@@ -9,7 +9,7 @@ To execute:
 
     Make sure your encrypted keystore file is in that directory, as well as a PacioliNode.env file; cd to that directory and:
 
-        docker compose run paciolinode
+        docker-compose run paciolinode
 
     Answer the two questions by the Pacioli node agent (keystore location, prefixed by /secret/ ; and its password); 
     so for keystore myKeystore, the location answer should be /secret/myKeystore . 
