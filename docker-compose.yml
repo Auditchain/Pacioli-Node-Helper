@@ -12,6 +12,7 @@ services:
     container_name: paciolinode
     stdin_open: true # docker run -i
     tty: true
+    restart: always
     volumes:
       - '.:/secret/'
       - 'myPacioliWorkVolume:/workdir'
