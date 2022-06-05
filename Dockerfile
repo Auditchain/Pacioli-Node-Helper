@@ -13,8 +13,8 @@ RUN npm install
 # RUN npm ci --only=production
 
 # Bundle app source
-COPY . .
+COPY *.js .
 
 EXPOSE 3333
-CMD [ "node", "providerManger.js" ]
+CMD [ "node", "TransactionSigner.js" ]
 
