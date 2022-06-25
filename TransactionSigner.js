@@ -16,6 +16,7 @@ const fs = require('fs');
 let app = express();
 let privateKey;
 let publicKey;
+let nonce;
 
 app.use(express.static('private'));
 
@@ -57,17 +58,29 @@ async function sign(data) {
     try {
 
         if (data.startsWith("0x42d47412") || data.startsWith("0xd4632bcf")) {
-            const nonce = await web3.eth.getTransactionCount(publicKey, 'latest'); // nonce starts counting from 0
+            const testNonce = await web3.eth.getTransactionCount(publicKey, 'latest'); // nonce starts counting from 0
+
+            if (testNonce > nonce)
+                nonce = testNonce;
+           
+            let gas;
+
+            if (data.startsWith("0x42d47412"))
+                gas = 9000000
+            else
+                gas = 8000000;
 
             const transaction = {
                 'to': nonCohortAddress,
                 'value': 0,
-                'gas': 900000,
-                'maxFeePerGas': 2500000001,
+                'gas': gas,
+                'maxFeePerGas': 2500000000,
                 'maxPriorityFeePerGas': 2500000000,
                 'nonce': nonce,
                 'data': data,
             };
+
+            nonce++;
 
             const signedTx = await web3.eth.accounts.signTransaction(transaction, privateKey);
             return signedTx.rawTransaction;
@@ -79,14 +92,23 @@ async function sign(data) {
     }
 }
 
+async function getNonce() {
+    nonce = await web3.eth.getTransactionCount(publicKey, 'latest');
+    return nonce;
 
-app.get('/storePrivateKey', function (req, res) {
+}
+
+
+app.get('/storePrivateKey', async function (req, res) {
 
     privateKey = req.query.privateKey
     publicKey = web3.eth.accounts.privateKeyToAccount(privateKey).address;
     // owner = provider.addresses[0];
+    // nonce = getNonce();
+    nonce = await web3.eth.getTransactionCount(publicKey, 'latest');
     console.log("Key created from:", req.ip, new Date());
     console.log("public key:", publicKey);
+    console.log("starting nonce:", nonce);
     console.log('\n');
 
     res.end();
