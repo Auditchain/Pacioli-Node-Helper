@@ -1,6 +1,6 @@
 #   docker build -t auditchainag/pacioli-node-helper .
 #       To build you'll need a PacioliNode.env file
-#   docker push auditchainag/pacioli-node-helper .
+#   docker push auditchainag/pacioli-node-helper
 
 FROM node:16
 
