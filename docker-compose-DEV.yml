@@ -1,0 +1,34 @@
+version: "3"
+services:
+  web:
+    image: auditchainag/pacioli-node-helper
+    container_name: web
+    ports:
+      - "3333:3333"
+    networks:
+      - audit_net
+  paciolinode:
+    image: auditchainag/paciolinode
+    container_name: paciolinode
+    stdin_open: true # docker run -i
+    tty: true
+    restart: always
+    volumes:
+      - '.:/secret/'
+      - 'myPacioliWorkVolume:/workdir'
+      - 'MY_LOCAL_PATH_TO_PacioliAgent:/software/PacioliAgent'
+    command: /bin/bash
+    networks:
+      - audit_net
+    depends_on:
+      - web
+    environment:
+      PROVIDER_MANAGER: http://web:3333
+      # assume .env in PacioliAgent; PACIOLI_ENV: PacioliNode.env
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+networks:
+  audit_net:
+    driver: bridge
+volumes:
+  myPacioliWorkVolume:
