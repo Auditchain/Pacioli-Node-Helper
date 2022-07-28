@@ -14,8 +14,8 @@ services:
     tty: true
     restart: always
     volumes:
-      - '.:/secret/'
-      - 'myPacioliWorkVolume:/workdir'
+      - '.:/secret:ro'
+      - '.:/workdir'
     command: /bin/bash
     networks:
       - audit_net
@@ -29,5 +29,3 @@ services:
 networks:
   audit_net:
     driver: bridge
-volumes:
-  myPacioliWorkVolume:
