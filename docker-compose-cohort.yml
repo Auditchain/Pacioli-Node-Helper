@@ -1,5 +1,4 @@
-# This is for non-cohort mode: 
-# docker-compose run -e MUMBAI_SERVER=YOUR_END_POINT paciolinode
+# For cohort mode: docker compose -f docker-compose-cohort.yml run paciolinode
 version: "3"
 services:
   web:
@@ -11,21 +10,24 @@ services:
       - audit_net
     environment:
       - TRANSACTION_SIGNER_PORT=3333
+      - MODE=cohort
   paciolinode:
     image: auditchainag/paciolinode
-    container_name: paciolinode
+    container_name: paciolinodecohort
     stdin_open: true # docker run -i
     tty: true
     restart: always
     volumes:
       - '.:/secret:ro'
       - '.:/workdir'
-    command: /bin/bash
+    entrypoint: ["node","scripts/pacioliAgentCohort.js"]
+    working_dir: /software/PacioliAgent
     networks:
       - audit_net
     depends_on:
       - web
     environment:
+      - MODE=cohort
       - TRANSACTION_SIGNER_PORT=3333
       - TRANSACTION_SIGNER_URL=http://web
       - PACIOLI_ENV=PacioliNode.env
